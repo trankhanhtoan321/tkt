@@ -32,6 +32,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                      <input type="text" id="slide_link" class="form-control col-md-7 col-xs-12" name="slide_link" />
                   </div>
                </div>
+               <div class="form-group">
+                  <label class="control-label col-md-3 col-sm-3 col-xs-12" for="slide_caption">
+                     Caption:
+                  </label>
+                  <div class="col-md-6 col-sm-6 col-xs-12">
+                     <input type="text" id="slide_caption" class="form-control col-md-7 col-xs-12" name="slide_caption" />
+                  </div>
+               </div>
             </div>
          </div>
       </div>

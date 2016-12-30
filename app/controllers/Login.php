@@ -10,7 +10,7 @@ class Login extends CI_Controller
 	}
 	public function index()
 	{
-		/*if($this->input->post('create'))
+		if($this->input->post('create'))
 		{
 			$data = array(
 				'user_name' => $this->input->post('user_name',TRUE),
@@ -35,7 +35,7 @@ class Login extends CI_Controller
 				$alert['alert']="Sign up error! user name already exists!";
 				$this->load->view('alert/error',$alert);
 			}
-		}*/
+		}
 		if($this->input->post('login'))
 		{
 			$data = array(

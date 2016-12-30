@@ -13,9 +13,7 @@ class Admin extends CI_Controller
 		$this->load->model('users_model');
 		$this->load->model('categorys_model');
 		$this->load->model('products_model');
-		$this->load->model('setting_model');
 		$this->load->model('blogcategory_model');
-		$this->load->model('blog_model');
 		$this->load->model('slide_model');
 
 		$this->load->library('tkt_upload');
@@ -34,21 +32,32 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('update_profile'))
 		{
-			$user_id = $this->_userlogin['user_id'];
-			$user_fullname = $this->input->post('user_fullname',TRUE);
-			$user_name = $this->input->post('user_name',TRUE);
-			$user_email = $this->input->post('user_email',TRUE);
-			$user_image = '';
-			if($this->tkt_upload->tkt_upload('user_image'))
+			$data_update = array(
+				'user_id' => $this->_userlogin['user_id'],
+				'user_fullname' => $this->input->post('user_fullname',TRUE),
+				'user_name' => $this->input->post('user_name',TRUE),
+				'user_email' => $this->input->post('user_email',TRUE)
+				);
+			$users = $this->users_model->tkt_get_list_by_field('user_name',$data_update['user_name']);
+			if($data_update['user_name']==$this->_userlogin['user_name'] || count($users)==0)
 			{
-				$user_image = $this->tkt_upload->tkt_get_file_path();
-			}
-			if($this->users_model->update_profile($user_id,$user_fullname,$user_name,$user_email,$user_image))
-			{
-				$data['_alert'] = 'alert/success';
-				if($userlogin = $this->users_model->get_info($user_id))
+				if($this->tkt_upload->tkt_upload('user_image'))
 				{
-					$this->session->set_userdata('userlogin',$userlogin);
+					$data_update['user_image'] = $this->tkt_upload->tkt_get_file_path();
+				}
+				if($this->users_model->tkt_update($data_update))
+				{
+					$data['_alert'] = 'alert/success';
+					$users = $this->users_model->tkt_get_list_by_field('user_name',$data_update['user_name']);
+					if(count($users)==1)
+					{
+						$this->_userlogin = $users[0];
+						$this->session->set_userdata('userlogin',$this->_userlogin);
+					}
+				}
+				else
+				{
+					$data['_alert'] = 'alert/error';
 				}
 			}
 			else
@@ -65,11 +74,29 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('change_password'))
 		{
-			$old_password = $this->input->post('old_password',TRUE);
-			$new_password = $this->input->post('new_password',TRUE);
-			if($this->users_model->change_password($this->_userlogin['user_id'],$old_password,$new_password))
-				$data['_alert'] = 'alert/success';
-			else $data['_alert'] = 'alert/error';
+			$data_update = array(
+				'user_id' => $this->_userlogin['user_id'],
+				'user_pass' => password_hash($this->input->post('new_password',TRUE),PASSWORD_DEFAULT)
+				);
+			$data_verify = array(
+				'user_name' => $this->_userlogin['user_name'],
+				'user_pass' => $this->input->post('old_password',TRUE)
+				);
+			if($this->users_model->tkt_verify($data_verify))
+			{
+				if($this->users_model->tkt_update($data_update))
+				{
+					$data['_alert'] = 'alert/success';
+				}
+				else
+				{
+					$data['_alert'] = 'alert/error';
+				}
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
 		}
 		$data['_varibles'] = NULL;
 		$data['_content'] = 'admin/change_password';
@@ -455,6 +482,7 @@ class Admin extends CI_Controller
 		{
 			$data_insert = array(
 				'slide_link' => $this->input->post('slide_link',TRUE),
+				'slide_caption' => $this->input->post('slide_caption',TRUE)
 				);
 			if($this->tkt_upload->tkt_upload('slide_image'))
 			{
@@ -493,7 +521,8 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'slide_id' => $slide_id,
-				'slide_link' => $this->input->post('slide_link',TRUE)
+				'slide_link' => $this->input->post('slide_link',TRUE),
+				'slide_caption' => $this->input->post('slide_caption',TRUE)
 				);
 			if($this->tkt_upload->tkt_upload('slide_image'))
 			{

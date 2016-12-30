@@ -52,9 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'main';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
-
-
-$route['danh-muc/(:any)-(:num)\.html']='category/index/$2';
-$route['(:any)-(:num)\.html']='product/index/$2';
-$route['blog/(:any)-(:num)\.html']='blog/detail/$2';
-$route['blogcat/(:any)-(:num)\.html']='blogcategory/index/$2';
+/*_________________custom routes____________________________*/
+$route['(:any)-(:num)-cat\.html/page/(:num)']='blogcategory/index/$2/$3';
+$route['(:any)-(:num)-cat\.html']='blogcategory/index/$2';
+$route['(:any)-(:num)\.html']='blog/index/$2';

@@ -47,7 +47,7 @@ class Blog_model extends CI_Model
 		}
 		else
 		{
-			if(_tkt_field_exist($field))
+			if($this->_tkt_field_exist($field))
 			{
 				$this->db->order_by($field,$order);
 			}
@@ -135,7 +135,7 @@ class Blog_model extends CI_Model
 	*/
 	public function tkt_search($key,$field = '',$limit=0,$offset=0,$order='ASC',$field='')
 	{
-		if(self::_tkt_field_exist($field))
+		if($this->_tkt_field_exist($field))
 		{
 			$this->db->like($field,$key);
 			if($limit!=0)
@@ -215,7 +215,7 @@ class Blog_model extends CI_Model
 	}
 	public function tkt_increase($key,$field)
 	{
-		if(self::_tkt_field_exist($field))
+		if($this->_tkt_field_exist($field))
 		{
 			$this->db->select($field);
 			$this->db->where($this->_tkt_primary_field,$key);
@@ -227,7 +227,7 @@ class Blog_model extends CI_Model
 			$data = array();
 			$data[$this->_tkt_primary_field]=$key;
 			$data[$field]=$num;
-			if(self::tkt_update($data)) return TRUE;
+			if($this->tkt_update($data)) return TRUE;
 			else return FALSE;
 		}
 		return FALSE;

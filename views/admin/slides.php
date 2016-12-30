@@ -7,6 +7,9 @@
 <div class="row">
    <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
+         <div class="x_title">
+            <a href="/admin/new_slide" class="btn btn-success">New Slide</a>
+         </div>
          <div class="x_content">
             <form action="" method="post">
                <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" />
@@ -17,6 +20,7 @@
                         <th>ID</th>
                         <th>Image</th>
                         <th>Link</th>
+                        <th>Caption</th>
                         <th>Action</th>
                      </tr>
                   </thead>
@@ -29,6 +33,7 @@
                         <td><?= $slide['slide_id']; ?></td>
                         <td><img style="width:200px;" src="<?= $slide['slide_image']; ?>" /></td>
                         <td><?= $slide['slide_link']; ?></td>
+                        <td><?= $slide['slide_caption']; ?></td>
                         <td><a href="/admin/update_slide/<?= $slide['slide_id']; ?>">Edit</a></td>
                      </tr> 
                      <?php } ?>

@@ -7,12 +7,9 @@ class Main extends CI_Controller
 	{
 		parent::__construct();
 		$this->load->model('slide_model');
-		$this->load->library('pagination');
 	}
 	public function index()
 	{
-		$data['_varibles'] = NULL;
-		$data['_content'] = NULL;
 		/*________________need for SEO________________________________________*/
 		$data['SEO_title'] = $this->setting_model->tkt_get('set_pagetitle');
 		$data['SEO_descriptiton'] = $this->setting_model->tkt_get('set_pagedescriptiton');
@@ -28,8 +25,8 @@ class Main extends CI_Controller
 		$data['_varibles']['dichvuketoans'][] = $this->blog_model->tkt_get(10);
 		/*___________________________need for side bar__________________________________*/
 		$blogs = $this->blog_model->tkt_get_list(0,0,'DESC','blog_time');
-		$data['_varibles']['newblogs'] = $this->blog_model->tkt_get_list(6,0,'DESC','blog_time');
-		$data['_varibles']['popularblogs'] = $this->blog_model->tkt_get_list(6,0,'DESC','blog_views');
+		// $data['_varibles']['newblogs'] = $this->blog_model->tkt_get_list(6,0,'DESC','blog_time');
+		// $data['_varibles']['popularblogs'] = $this->blog_model->tkt_get_list(6,0,'DESC','blog_views');
 		/*__________________________________end need___________________________________*/
 		$data['_varibles']['slides'] = $this->slide_model->tkt_get_list();
 		$data['_varibles']['kinhnghiems'] = array();
@@ -47,6 +44,7 @@ class Main extends CI_Controller
 		$config_pagination['base_url'] = '/kinh-nghiem-5-cat.html/page';
 		$config_pagination['total_rows'] = $kn_totals;
 		$config_pagination['per_page'] = 1;
+		$this->load->library('pagination');
 		$this->pagination->initialize($config_pagination);
 		$data['_varibles']['kn_pagination'] = $this->pagination->create_links();
 		/*________________________________________________________________*/
@@ -65,6 +63,7 @@ class Main extends CI_Controller
 		$config_pagination['base_url'] = '/tin-tuc-4-cat.html/page';
 		$config_pagination['total_rows'] = $tt_totals;
 		$config_pagination['per_page'] = 1;
+		$this->load->library('pagination');
 		$this->pagination->initialize($config_pagination);
 		$data['_varibles']['tt_pagination'] = $this->pagination->create_links();
 		$data['_varibles']['ttt_pagination'] = $this->pagination->create_links();

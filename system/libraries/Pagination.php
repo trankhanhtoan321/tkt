@@ -6,7 +6,7 @@
  *
  * This content is released under the MIT License (MIT)
  *
- * Copyright (c) 2014 - 2016, British Columbia Institute of Technology
+ * Copyright (c) 2014 - 2017, British Columbia Institute of Technology
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,7 @@
  * @package	CodeIgniter
  * @author	EllisLab Dev Team
  * @copyright	Copyright (c) 2008 - 2014, EllisLab, Inc. (https://ellislab.com/)
- * @copyright	Copyright (c) 2014 - 2016, British Columbia Institute of Technology (http://bcit.ca/)
+ * @copyright	Copyright (c) 2014 - 2017, British Columbia Institute of Technology (http://bcit.ca/)
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  * @since	Version 1.0.0
@@ -86,7 +86,7 @@ class CI_Pagination {
 	 *
 	 * @var	int
 	 */
-	protected $num_links = 4;
+	protected $num_links = 2;
 
 	/**
 	 * Items per page
@@ -151,42 +151,42 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $full_tag_open = '<ul class="pagination">';
+	protected $full_tag_open = '';
 
 	/**
 	 * Full tag close
 	 *
 	 * @var	string
 	 */
-	protected $full_tag_close = '</ul>';
+	protected $full_tag_close = '';
 
 	/**
 	 * First tag open
 	 *
 	 * @var	string
 	 */
-	protected $first_tag_open = '<li>';
+	protected $first_tag_open = '';
 
 	/**
 	 * First tag close
 	 *
 	 * @var	string
 	 */
-	protected $first_tag_close = '</li>';
+	protected $first_tag_close = '';
 
 	/**
 	 * Last tag open
 	 *
 	 * @var	string
 	 */
-	protected $last_tag_open = '<li>';
+	protected $last_tag_open = '';
 
 	/**
 	 * Last tag close
 	 *
 	 * @var	string
 	 */
-	protected $last_tag_close = '</li>';
+	protected $last_tag_close = '';
 
 	/**
 	 * First URL
@@ -202,56 +202,56 @@ class CI_Pagination {
 	 *
 	 * @var	string
 	 */
-	protected $cur_tag_open = '<li class="active"><a href="#">';
+	protected $cur_tag_open = '<strong>';
 
 	/**
 	 * Current tag close
 	 *
 	 * @var	string
 	 */
-	protected $cur_tag_close = '</a></li>';
+	protected $cur_tag_close = '</strong>';
 
 	/**
 	 * Next tag open
 	 *
 	 * @var	string
 	 */
-	protected $next_tag_open = '<li>';
+	protected $next_tag_open = '';
 
 	/**
 	 * Next tag close
 	 *
 	 * @var	string
 	 */
-	protected $next_tag_close = '</li>';
+	protected $next_tag_close = '';
 
 	/**
 	 * Previous tag open
 	 *
 	 * @var	string
 	 */
-	protected $prev_tag_open = '<li>';
+	protected $prev_tag_open = '';
 
 	/**
 	 * Previous tag close
 	 *
 	 * @var	string
 	 */
-	protected $prev_tag_close = '</li>';
+	protected $prev_tag_close = '';
 
 	/**
 	 * Number tag open
 	 *
 	 * @var	string
 	 */
-	protected $num_tag_open = '<li>';
+	protected $num_tag_open = '';
 
 	/**
 	 * Number tag close
 	 *
 	 * @var	string
 	 */
-	protected $num_tag_close = '</li>';
+	protected $num_tag_close = '';
 
 	/**
 	 * Page query string flag

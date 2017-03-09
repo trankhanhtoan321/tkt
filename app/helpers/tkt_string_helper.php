@@ -88,6 +88,7 @@ if(!function_exists('rewrite'))
         '©'=>' Copyright ', '®'=>' Registered ', '™' =>' Trademark ',
         '%'=>' percent ',
         ':' => '',
+        '/' => '',
 
         'Đ'=>'D',
         'đ'=>'d',

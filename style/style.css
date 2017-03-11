@@ -1,0 +1,33 @@
+.navbar {
+	font-family: sans-serif, Arial, Helvetica;
+	margin-bottom: 0;
+	background-color: #FFF;
+	border: 0;
+	border-radius: 0;
+	border-bottom: solid 1px #86B545;
+}
+.navbar a{
+	font-family: "Roboto Condensed", Helvetica, Arial, Verdana, sans-serif;
+	color: #86B545 !important;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+.dropdown-menu li a:hover {
+	background-color: yellow !important;
+	color:#86B545 !important;
+}
+.dropdown-menu li a {
+	/*background-color: yellow !important;*/
+	color:#86B545 !important;
+}
+.navbar .navbar-header a{
+	color:#86B545 !important;
+}
+@media (min-width: 979px) {
+  ul.nav li.dropdown:hover > ul.dropdown-menu {
+    display: block;
+  }
+}
+a:hover{
+	text-decoration: none;
+}

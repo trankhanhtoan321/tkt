@@ -13,7 +13,7 @@ class Tkt_upload
 		$this->_CI =& get_instance();
 		$this->_CI->load->library('upload');
 		// assign config
-		$this->_config['upload_path'] = APPPATH.'uploads/';
+		$this->_config['upload_path'] = 'uploads/';
 		$this->_config['file_ext_tolower'] = TRUE;
 		$this->_config['max_size'] = 8192;
 		$this->_config['encrypt_name'] = TRUE;

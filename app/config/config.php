@@ -315,7 +315,7 @@ $config['cache_query_string'] = FALSE;
 | https://codeigniter.com/user_guide/libraries/encryption.html
 |
 */
-$config['encryption_key'] = 'BUKT';
+$config['encryption_key'] = 'BUKT_EK';
 
 /*
 |--------------------------------------------------------------------------
@@ -369,7 +369,7 @@ $config['encryption_key'] = 'BUKT';
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'tkt_session';
+$config['sess_cookie_name'] = 'BUKT_SCN';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = NULL;
 $config['sess_match_ip'] = FALSE;
@@ -440,8 +440,8 @@ $config['global_xss_filtering'] = FALSE;
 | 'csrf_exclude_uris' = Array of URIs which ignore CSRF checks
 */
 $config['csrf_protection'] = TRUE;
-$config['csrf_token_name'] = 'trankhanhtoan';
-$config['csrf_cookie_name'] = 'trankhanhtoan';
+$config['csrf_token_name'] = 'BUKT_CTN';
+$config['csrf_cookie_name'] = 'BUKT_CCN';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
 $config['csrf_exclude_uris'] = array();
@@ -466,7 +466,7 @@ $config['csrf_exclude_uris'] = array();
 | by the output class.  Do not 'echo' any values with compression enabled.
 |
 */
-$config['compress_output'] = FALSE;
+$config['compress_output'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------

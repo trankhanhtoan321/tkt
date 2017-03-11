@@ -28,3 +28,4 @@
   </div>
 </div>
 <!-- /top tiles -->
+<?=date("d/m/Y H:i:s",time())?>

@@ -89,6 +89,7 @@ if(!function_exists('rewrite'))
         '%'=>' percent ',
         ':' => '',
         '/' => '',
+        '?' => '',
 
         'Đ'=>'D',
         'đ'=>'d',

@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Categorys_model extends CI_Model
+class Subscribe_email_model extends CI_Model
 {
-	private $_tkt_table_name = 'categorys';
+	private $_tkt_table_name = 'subscribe_email';
 	private $_tkt_fields;
 	private $_tkt_primary_field;
 	public function __construct()

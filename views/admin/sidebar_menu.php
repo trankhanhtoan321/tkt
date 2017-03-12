@@ -20,6 +20,7 @@
     <li><a><i class="fa fa-plug"></i> Extends <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         <li><a target="_blank" href="/lib/ckfinder/ckfinder.html">Media Files</a></li>
+        <li><a href="/admin/subscribe_email">Subscribe Email</a></li>
         <li><a>Slide<span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
               <li><a href="/admin/new_slide">New Slide</a></li>

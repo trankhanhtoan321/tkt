@@ -11,11 +11,9 @@ class Admin extends CI_Controller
 			redirect('/login','refresh');
 		
 		$this->load->model('users_model');
-		$this->load->model('categorys_model');
-		$this->load->model('products_model');
 		$this->load->model('blogcategory_model');
 		$this->load->model('slide_model');
-
+		$this->load->model('subscribe_email_model');
 		$this->load->library('tkt_upload');
 
 		$this->_userlogin = $this->session->userdata('userlogin');
@@ -539,6 +537,19 @@ class Admin extends CI_Controller
 		}
 		$data['_varibles']['slide'] =  $this->slide_model->tkt_get($slide_id);
 		$data['_content'] = 'admin/update_slide';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function subscribe_email()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->subscribe_email_model->tkt_delete($this->input->post('table_records',TRUE)))
+				$data['_alert'] = 'alert/success';
+			else $data['_alert'] = 'alert/error';
+		}
+		$data['_varibles']['subs'] = $this->subscribe_email_model->tkt_get_list(0,0,'DESC');
+		$data['_content'] = 'admin/subscribe_email';
 		$this->load->view('layouts/admin',$data);
 	}
 }

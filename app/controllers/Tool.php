@@ -9,21 +9,13 @@ class Tool extends CI_Controller
 		if(!$this->session->has_userdata('userlogin'))
 			redirect('/login','refresh');
 	}
-	public function add_key_des()
+	public function index()
 	{
-
-		// $this->load->model('blog_model');
-		// $data = $this->blog_model->tkt_get_list();
-		// foreach($data as $t)
-		// {
-		// 	$data_update = array(
-		// 		'blog_id' => $t['blog_id'],
-		// 		'blog_seo_title' => $t['blog_name'],
-		// 		'blog_seo_keyword' => $t['blog_name'],
-		// 		'blog_seo_description' => $t['blog_name'].get_excerpt($t['blog_content'],160)
-		// 		);
-		// 	if($this->blog_model->tkt_update($data_update)) echo $t['blog_id'].'<br/>';
-		// 	else echo $t['blog_id'].'failled<br/>';
-		// }
+		$this->load->library('tkt_mailer');
+		$this->tkt_mailer->addTo('14520979@gm.uit.edu.vn');
+		$this->tkt_mailer->setBody("sdhasdf asdf asdf asdf asdf sdf");
+		$this->tkt_mailer->setSubject("alksdjfasdfasdfasdf");
+		if($this->tkt_mailer->send()) echo 1;
+		else echo 0;
 	}
 }

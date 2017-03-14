@@ -5,12 +5,6 @@
 			<?php $this->load->view('site/contact'); ?>
 		</div>
 		<div class="col-md-3 col-sm-3 col-xs-12">
-			<!-- <h4 style="color:#000">SOCIAL</h4>
-			<i style="font-size:40px;" class="fa fa-facebook-square" aria-hidden="true"></i>
-			<i style="font-size:40px;" class="fa fa-google-plus-square" aria-hidden="true"></i>
-			<i style="font-size:40px;" class="fa fa-youtube-square" aria-hidden="true"></i>
-			<i style="font-size:40px;" class="fa fa-skype" aria-hidden="true"></i>
-			<i style="font-size:40px;" class="fa fa-twitter-square" aria-hidden="true"></i> -->
 			<?php $this->load->view('site/page_facebook'); ?>
 		</div>
 		<div class="col-md-3 col-sm-3 col-xs-12">
@@ -25,4 +19,3 @@
 		</div>
 	</div>
 </div>
-<?php $this->load->view('site/footer_script'); ?>

@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-/*
-|	$this->load->library('tkt_upload');
-|	$this->tkt_upload->tkt_upload([field from form upload])
+/**
+* $this->load->library('tkt_upload');
+* $this->tkt_upload->tkt_upload([field from form upload])
 */
 class Tkt_upload
 {

@@ -14,7 +14,7 @@ class Tkt_mailer
         $this->mail->SMTPAuth = true;
         $this->mail->Username = "trankhanhtoan321@gmail.com";
         $this->mail->Password = "BUKT25041996";
-        $this->mail->setFrom('trankhanhtoan321@gmail.com', 'Trần Khánh Toàn lập trình');
+        $this->mail->setFrom('trankhanhtoan321@gmail.com', 'Trần Khánh Toàn');
         $this->mail->addReplyTo('trankhanhtoan321@gmail.com', 'Trần Khánh Toàn');
     }
 
@@ -52,5 +52,25 @@ class Tkt_mailer
     public function getError()
     {
         return $this->mail->ErrorInfo;
+    }
+
+    public function setUsername($name)
+    {
+        $this->mail->Username = $name;
+    }
+
+    public function setPassword($pass)
+    {
+        $this->mail->Password = $pass;
+    }
+
+    public function setFrom($address, $name = '', $auto = true)
+    {
+        $this->mail->setFrom($address, $name, $auto);
+    }
+
+    public function addReplyTo($address, $name = '')
+    {
+        $this->mail->addReplyTo($address,$name);
     }
 }

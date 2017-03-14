@@ -11,11 +11,11 @@ class Tool extends CI_Controller
 	}
 	public function index()
 	{
-		$this->load->library('tkt_mailer');
-		$this->tkt_mailer->addTo('14520979@gm.uit.edu.vn');
-		$this->tkt_mailer->setBody("sdhasdf asdf asdf asdf asdf sdf");
-		$this->tkt_mailer->setSubject("alksdjfasdfasdfasdf");
-		if($this->tkt_mailer->send()) echo 1;
-		else echo 0;
+		// $this->load->library('tkt_mailer');
+		// $this->tkt_mailer->addTo('14520979@gm.uit.edu.vn');
+		// $this->tkt_mailer->setBody("sdhasdf asdf asdf asdf asdf sdf");
+		// $this->tkt_mailer->setSubject("alksdjfasdfasdfasdf");
+		// if($this->tkt_mailer->send()) echo 1;
+		// else echo 0;
 	}
 }

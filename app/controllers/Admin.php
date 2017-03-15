@@ -32,9 +32,9 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'user_id' => $this->_userlogin['user_id'],
-				'user_fullname' => $this->input->post('user_fullname',TRUE),
-				'user_name' => $this->input->post('user_name',TRUE),
-				'user_email' => $this->input->post('user_email',TRUE)
+				'user_fullname' => $this->input->post('user_fullname'),
+				'user_name' => $this->input->post('user_name'),
+				'user_email' => $this->input->post('user_email')
 				);
 			$users = $this->users_model->tkt_get_list_by_field('user_name',$data_update['user_name']);
 			if($data_update['user_name']==$this->_userlogin['user_name'] || count($users)==0)
@@ -74,11 +74,11 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'user_id' => $this->_userlogin['user_id'],
-				'user_pass' => password_hash($this->input->post('new_password',TRUE),PASSWORD_DEFAULT)
+				'user_pass' => password_hash($this->input->post('new_password'),PASSWORD_DEFAULT)
 				);
 			$data_verify = array(
 				'user_name' => $this->_userlogin['user_name'],
-				'user_pass' => $this->input->post('old_password',TRUE)
+				'user_pass' => $this->input->post('old_password')
 				);
 			if($this->users_model->tkt_verify($data_verify))
 			{
@@ -101,193 +101,19 @@ class Admin extends CI_Controller
 		$this->load->view('layouts/admin',$data);
 	}
 
-	public function add_product_category()
-	{
-		if($this->input->post('add_product_category'))
-		{
-			$data_temp = array(
-				'cat_name' => $this->input->post('cat_name',TRUE),
-				'cat_seo_title' => $this->input->post('cat_seo_title',TRUE),
-				'cat_seo_description' => $this->input->post('cat_seo_description',TRUE),
-				'cat_seo_keyword' => $this->input->post('cat_seo_keyword',TRUE),
-				'cat_parent_id' => $this->input->post('cat_parent_id',TRUE),
-				'cat_description' => $this->input->post('cat_description'),
-				'cat_image' => '/uploads/icons/none.jpg'
-			);
-			if($this->tkt_upload->tkt_upload('cat_image'))
-			{
-				$data_temp['cat_image'] = $this->tkt_upload->tkt_get_file_path();
-			}
-			if($this->categorys_model->tkt_insert($data_temp))
-			{
-				$data['_alert'] = 'alert/success';
-			}
-			else
-			{
-				$data['_alert'] = 'alert/error';
-			}
-		}
-		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
-		$data['_content'] = 'admin/add_product_category';
-		$this->load->view('layouts/admin',$data);
-	}
-
-	public function categorys()
-	{
-		if($this->input->post('delete_records'))
-		{
-			if($this->categorys_model->tkt_delete($this->input->post('table_records',TRUE)))
-				$data['_alert'] = 'alert/success';
-			else $data['_alert'] = 'alert/error';
-		}
-		$data['_content'] = 'admin/categorys';
-		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
-		$this->load->view('layouts/admin',$data);
-	}
-
-	public function products()
-	{
-		if($this->input->post('delete_records'))
-		{
-			if($this->products_model->tkt_delete($this->input->post('table_records',TRUE)))
-				$data['_alert'] = 'alert/success';
-			else $data['_alert'] = 'alert/error';
-		}
-		$data['_content'] = 'admin/products';
-		$data['_varibles']['products'] = $this->products_model->tkt_get_list();
-		$this->load->view('layouts/admin',$data);
-	}
-
-	public function new_product()
-	{
-		if($this->input->post('new_product'))
-		{
-			$data_insert = array(
-				'pro_name' => $this->input->post('pro_name',TRUE),
-				'pro_sku' => $this->input->post('pro_sku',TRUE),
-				'pro_description' => $this->input->post('pro_description',TRUE),
-				'pro_shortdescripttion' => $this->input->post('pro_shortdescripttion',TRUE),
-				'pro_seo_title' => $this->input->post('pro_seo_title',TRUE),
-				'pro_seo_description' => $this->input->post('pro_seo_description',TRUE),
-				'pro_seo_keyword' => $this->input->post('pro_seo_keyword',TRUE),
-				'pro_price' => $this->input->post('pro_price',TRUE),
-				'pro_cat_ids' => json_encode($this->input->post('pro_cat_ids',TRUE)),
-				'pro_image' => '/uploads/icons/none.jpg'
-			);
-			if($this->input->post('use_sale_price') == 1)
-			{
-				$data_insert['pro_price_sale'] = $this->input->post('pro_price_sale',TRUE);
-				$pro_date_sale = $this->input->post('pro_date_sale',TRUE);
-				$timetkt = explode("-", $pro_date_sale);
-				$data_insert['pro_price_sale_date_begin'] = strtotime($timetkt[0]);
-				$data_insert['pro_price_sale_date_finish'] = strtotime($timetkt[1]);
-			}
-			if($this->tkt_upload->tkt_upload('pro_image'))
-			{
-				$data_insert['pro_image'] = $this->tkt_upload->tkt_get_file_path();
-			}
-			if($this->products_model->tkt_insert($data_insert))
-			{
-				$data['_alert'] = 'alert/success';
-			}
-			else
-			{
-				$data['_alert'] = 'alert/error';
-			}
-		}
-		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
-		$data['_content'] = 'admin/new_product';
-		$this->load->view('layouts/admin',$data);
-	}
-
-	public function update_product($pro_id)
-	{
-		if($this->input->post('update_product'))
-		{
-			$data_update = array(
-				'pro_id' => $pro_id,
-				'pro_name' => $this->input->post('pro_name',TRUE),
-				'pro_sku' => $this->input->post('pro_sku',TRUE),
-				'pro_description' => $this->input->post('pro_description',TRUE),
-				'pro_shortdescripttion' => $this->input->post('pro_shortdescripttion',TRUE),
-				'pro_seo_title' => $this->input->post('pro_seo_title',TRUE),
-				'pro_seo_description' => $this->input->post('pro_seo_description',TRUE),
-				'pro_seo_keyword' => $this->input->post('pro_seo_keyword',TRUE),
-				'pro_price' => $this->input->post('pro_price',TRUE),
-				'pro_cat_ids' => json_encode($this->input->post('pro_cat_ids',TRUE))
-			);
-			if($this->input->post('use_sale_price') == 1)
-			{
-				$data_update['pro_price_sale'] = $this->input->post('pro_price_sale',TRUE);
-				$pro_date_sale = $this->input->post('pro_date_sale',TRUE);
-				$timetkt = explode("-", $pro_date_sale);
-				$data_update['pro_price_sale_date_begin'] = strtotime($timetkt[0]);
-				$data_update['pro_price_sale_date_finish'] = strtotime($timetkt[1]);
-			}
-			if($this->tkt_upload->tkt_upload('pro_image'))
-			{
-				$data_update['pro_image'] = $this->tkt_upload->tkt_get_file_path();
-			}
-			if($this->products_model->tkt_update($data_update))
-			{
-				$data['_alert'] = 'alert/success';
-			}
-			else
-			{
-				$data['_alert'] = 'alert/error';
-			}
-		}
-		$data['_varibles']['product'] = $this->products_model->tkt_get($pro_id);
-		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
-		$data['_content'] = 'admin/update_product';
-		$this->load->view('layouts/admin',$data);
-	}
-	
-	public function update_category($cat_id)
-	{
-		if($this->input->post('update_category'))
-		{
-			$data_update = array(
-				'cat_id' => $cat_id,
-				'cat_name' => $this->input->post('cat_name',TRUE),
-				'cat_seo_title' => $this->input->post('cat_seo_title',TRUE),
-				'cat_seo_description' => $this->input->post('cat_seo_description',TRUE),
-				'cat_seo_keyword' => $this->input->post('cat_seo_keyword',TRUE),
-				'cat_parent_id' => $this->input->post('cat_parent_id',TRUE),
-				'cat_description' => $this->input->post('cat_description',TRUE)
-			);
-			if($this->tkt_upload->tkt_upload('cat_image'))
-			{
-				$data_update['cat_image'] = $this->tkt_upload->tkt_get_file_path();
-			}
-			if($this->categorys_model->tkt_update($data_update))
-			{
-				$data['_alert'] = 'alert/success';
-			}
-			else
-			{
-				$data['_alert'] = 'alert/error';
-			}
-		}
-		$data['_varibles']['category'] = $this->categorys_model->tkt_get($cat_id);
-		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
-		$data['_content'] = 'admin/update_category';
-		$this->load->view('layouts/admin',$data);
-	}
-
 	public function general_setting()
 	{
 		if($this->input->post('save_setting'))
 		{
 			$data_update = array(
-				'set_pagetitle' => $this->input->post('set_pagetitle',TRUE),
-				'set_pagedescriptiton' => $this->input->post('set_pagedescriptiton',TRUE),
-				'set_pagekeyword' => $this->input->post('set_pagekeyword',TRUE),
-				'address' => $this->input->post('address',TRUE),
-				'phone' => $this->input->post('phone',TRUE),
-				'email' => $this->input->post('email',TRUE),
-				'id_analytics' => $this->input->post('id_analytics',TRUE),
-				'google_site_verification' => $this->input->post('google_site_verification',TRUE)
+				'set_pagetitle' => $this->input->post('set_pagetitle'),
+				'set_pagedescriptiton' => $this->input->post('set_pagedescriptiton'),
+				'set_pagekeyword' => $this->input->post('set_pagekeyword'),
+				'address' => $this->input->post('address'),
+				'phone' => $this->input->post('phone'),
+				'email' => $this->input->post('email'),
+				'id_analytics' => $this->input->post('id_analytics'),
+				'google_site_verification' => $this->input->post('google_site_verification')
 				);
 			if($this->tkt_upload->tkt_upload('logo'))
 			{
@@ -311,7 +137,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->blogcategory_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->blogcategory_model->tkt_delete($this->input->post('table_records')))
 			{
 				$data['_alert'] = 'alert/success';
 			}
@@ -330,12 +156,12 @@ class Admin extends CI_Controller
 		if($this->input->post('new_blogcategory'))
 		{
 			$data_insert = array(
-				'blogcat_name' => $this->input->post('blogcat_name',TRUE),
-				'blogcat_seo_title' => $this->input->post('blogcat_seo_title',TRUE),
-				'blogcat_seo_description' => $this->input->post('blogcat_seo_description',TRUE),
-				'blogcat_seo_keyword' => $this->input->post('blogcat_seo_keyword',TRUE),
-				'blogcat_parent_id' => $this->input->post('blogcat_parent_id',TRUE),
-				'blogcat_description' => $this->input->post('blogcat_description',TRUE),
+				'blogcat_name' => $this->input->post('blogcat_name'),
+				'blogcat_seo_title' => $this->input->post('blogcat_seo_title'),
+				'blogcat_seo_description' => $this->input->post('blogcat_seo_description'),
+				'blogcat_seo_keyword' => $this->input->post('blogcat_seo_keyword'),
+				'blogcat_parent_id' => $this->input->post('blogcat_parent_id'),
+				'blogcat_description' => $this->input->post('blogcat_description'),
 				'blogcat_image' => '/uploads/icons/none.jpg'
 				);
 			if($this->tkt_upload->tkt_upload('blogcat_image'))
@@ -363,12 +189,12 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'blogcat_id' => $blogcat_id,
-				'blogcat_name' => $this->input->post('blogcat_name',TRUE),
-				'blogcat_seo_title' => $this->input->post('blogcat_seo_title',TRUE),
-				'blogcat_seo_description' => $this->input->post('blogcat_seo_description',TRUE),
-				'blogcat_seo_keyword' => $this->input->post('blogcat_seo_keyword',TRUE),
-				'blogcat_parent_id' => $this->input->post('blogcat_parent_id',TRUE),
-				'blogcat_description' => $this->input->post('blogcat_description',TRUE)
+				'blogcat_name' => $this->input->post('blogcat_name'),
+				'blogcat_seo_title' => $this->input->post('blogcat_seo_title'),
+				'blogcat_seo_description' => $this->input->post('blogcat_seo_description'),
+				'blogcat_seo_keyword' => $this->input->post('blogcat_seo_keyword'),
+				'blogcat_parent_id' => $this->input->post('blogcat_parent_id'),
+				'blogcat_description' => $this->input->post('blogcat_description')
 				);
 			if($this->tkt_upload->tkt_upload('blogcat_image'))
 			{
@@ -396,12 +222,12 @@ class Admin extends CI_Controller
 			$data_insert = array(
 				'blog_user_id' => $this->_userlogin['user_id'],
 				'blog_time' => time(),
-				'blog_name' => $this->input->post('blog_name',TRUE),
-				'blog_seo_title' => $this->input->post('blog_seo_title',TRUE),
-				'blog_seo_description' => $this->input->post('blog_seo_description',TRUE),
-				'blog_seo_keyword' => $this->input->post('blog_seo_keyword',TRUE),
-				'blog_cat_ids' => json_encode($this->input->post('blog_cat_ids',TRUE)),
-				'blog_content' => $this->input->post('blog_content',TRUE),
+				'blog_name' => $this->input->post('blog_name'),
+				'blog_seo_title' => $this->input->post('blog_seo_title'),
+				'blog_seo_description' => $this->input->post('blog_seo_description'),
+				'blog_seo_keyword' => $this->input->post('blog_seo_keyword'),
+				'blog_cat_ids' => json_encode($this->input->post('blog_cat_ids')),
+				'blog_content' => $this->input->post('blog_content'),
 				'blog_image' => '/uploads/icons/none.jpg'
 				);
 			if($this->tkt_upload->tkt_upload('blog_image'))
@@ -426,7 +252,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->blog_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->blog_model->tkt_delete($this->input->post('table_records')))
 			{
 				$data['_alert'] = 'alert/success';
 			}
@@ -448,12 +274,12 @@ class Admin extends CI_Controller
 			$data_update = array(
 				'blog_id' => $blog_id,
 				'blog_time' => time(),
-				'blog_name' => $this->input->post('blog_name',TRUE),
-				'blog_seo_title' => $this->input->post('blog_seo_title',TRUE),
-				'blog_seo_description' => $this->input->post('blog_seo_description',TRUE),
-				'blog_seo_keyword' => $this->input->post('blog_seo_keyword',TRUE),
-				'blog_cat_ids' => json_encode($this->input->post('blog_cat_ids',TRUE)),
-				'blog_content' => $this->input->post('blog_content',TRUE)
+				'blog_name' => $this->input->post('blog_name'),
+				'blog_seo_title' => $this->input->post('blog_seo_title'),
+				'blog_seo_description' => $this->input->post('blog_seo_description'),
+				'blog_seo_keyword' => $this->input->post('blog_seo_keyword'),
+				'blog_cat_ids' => json_encode($this->input->post('blog_cat_ids')),
+				'blog_content' => $this->input->post('blog_content')
 				);
 			if($this->tkt_upload->tkt_upload('blog_image'))
 			{
@@ -479,8 +305,8 @@ class Admin extends CI_Controller
 		if($this->input->post('new_slide'))
 		{
 			$data_insert = array(
-				'slide_link' => $this->input->post('slide_link',TRUE),
-				'slide_caption' => $this->input->post('slide_caption',TRUE)
+				'slide_link' => $this->input->post('slide_link'),
+				'slide_caption' => $this->input->post('slide_caption')
 				);
 			if($this->tkt_upload->tkt_upload('slide_image'))
 			{
@@ -504,7 +330,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->slide_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->slide_model->tkt_delete($this->input->post('table_records')))
 				$data['_alert'] = 'alert/success';
 			else $data['_alert'] = 'alert/error';
 		}
@@ -519,8 +345,8 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'slide_id' => $slide_id,
-				'slide_link' => $this->input->post('slide_link',TRUE),
-				'slide_caption' => $this->input->post('slide_caption',TRUE)
+				'slide_link' => $this->input->post('slide_link'),
+				'slide_caption' => $this->input->post('slide_caption')
 				);
 			if($this->tkt_upload->tkt_upload('slide_image'))
 			{
@@ -544,7 +370,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->subscribe_email_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->subscribe_email_model->tkt_delete($this->input->post('table_records')))
 				$data['_alert'] = 'alert/success';
 			else $data['_alert'] = 'alert/error';
 		}

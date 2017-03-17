@@ -14,6 +14,10 @@ class Admin extends CI_Controller
 		$this->load->model('blogcategory_model');
 		$this->load->model('slide_model');
 		$this->load->model('subscribe_email_model');
+		$this->load->model('categorys_model');
+		$this->load->model('products_model');
+		$this->load->model('course_cat_model');
+		$this->load->model('course_model');
 		$this->load->library('tkt_upload');
 
 		$this->_userlogin = $this->session->userdata('userlogin');
@@ -300,6 +304,164 @@ class Admin extends CI_Controller
 		$this->load->view('layouts/admin',$data);
 	}
 
+	public function add_product_category()
+	{
+		if($this->input->post('add_product_category'))
+		{
+			$data_temp = array(
+				'cat_name' => $this->input->post('cat_name',TRUE),
+				'cat_seo_title' => $this->input->post('cat_seo_title',TRUE),
+				'cat_seo_description' => $this->input->post('cat_seo_description',TRUE),
+				'cat_seo_keyword' => $this->input->post('cat_seo_keyword',TRUE),
+				'cat_parent_id' => $this->input->post('cat_parent_id',TRUE),
+				'cat_description' => $this->input->post('cat_description'),
+				'cat_image' => '/uploads/icons/none.jpg'
+			);
+			if($this->tkt_upload->tkt_upload('cat_image'))
+			{
+				$data_temp['cat_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->categorys_model->tkt_insert($data_temp))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
+		$data['_content'] = 'admin/add_product_category';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function categorys()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->categorys_model->tkt_delete($this->input->post('table_records',TRUE)))
+				$data['_alert'] = 'alert/success';
+			else $data['_alert'] = 'alert/error';
+		}
+		$data['_content'] = 'admin/categorys';
+		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function products()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->products_model->tkt_delete($this->input->post('table_records',TRUE)))
+				$data['_alert'] = 'alert/success';
+			else $data['_alert'] = 'alert/error';
+		}
+		$data['_content'] = 'admin/products';
+		$data['_varibles']['products'] = $this->products_model->tkt_get_list();
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function new_product()
+	{
+		if($this->input->post('new_product'))
+		{
+			$data_insert = array(
+				'pro_name' => $this->input->post('pro_name',TRUE),
+				'pro_sku' => $this->input->post('pro_sku',TRUE),
+				'pro_description' => $this->input->post('pro_description',TRUE),
+				'pro_shortdescripttion' => $this->input->post('pro_shortdescripttion',TRUE),
+				'pro_seo_title' => $this->input->post('pro_seo_title',TRUE),
+				'pro_seo_description' => $this->input->post('pro_seo_description'),
+				'pro_seo_keyword' => $this->input->post('pro_seo_keyword',TRUE),
+				'pro_price' => $this->input->post('pro_price',TRUE),
+				'pro_cat_ids' => json_encode($this->input->post('pro_cat_ids',TRUE)),
+				'pro_image' => '/uploads/icons/none.jpg'
+			);
+			if($this->tkt_upload->tkt_upload('pro_image'))
+			{
+				$data_insert['pro_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->products_model->tkt_insert($data_insert))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
+		$data['_content'] = 'admin/new_product';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function update_product($pro_id)
+	{
+		if($this->input->post('update_product'))
+		{
+			$data_update = array(
+				'pro_id' => $pro_id,
+				'pro_name' => $this->input->post('pro_name',TRUE),
+				'pro_sku' => $this->input->post('pro_sku',TRUE),
+				'pro_description' => $this->input->post('pro_description'),
+				'pro_shortdescripttion' => $this->input->post('pro_shortdescripttion',TRUE),
+				'pro_seo_title' => $this->input->post('pro_seo_title',TRUE),
+				'pro_seo_description' => $this->input->post('pro_seo_description',TRUE),
+				'pro_seo_keyword' => $this->input->post('pro_seo_keyword',TRUE),
+				'pro_price' => $this->input->post('pro_price',TRUE),
+				'pro_cat_ids' => json_encode($this->input->post('pro_cat_ids',TRUE))
+			);
+			if($this->tkt_upload->tkt_upload('pro_image'))
+			{
+				$data_update['pro_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->products_model->tkt_update($data_update))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles']['product'] = $this->products_model->tkt_get($pro_id);
+		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
+		$data['_content'] = 'admin/update_product';
+		$this->load->view('layouts/admin',$data);
+	}
+	
+	public function update_category($cat_id)
+	{
+		if($this->input->post('update_category'))
+		{
+			$data_update = array(
+				'cat_id' => $cat_id,
+				'cat_name' => $this->input->post('cat_name',TRUE),
+				'cat_seo_title' => $this->input->post('cat_seo_title',TRUE),
+				'cat_seo_description' => $this->input->post('cat_seo_description',TRUE),
+				'cat_seo_keyword' => $this->input->post('cat_seo_keyword',TRUE),
+				'cat_parent_id' => $this->input->post('cat_parent_id',TRUE),
+				'cat_description' => $this->input->post('cat_description')
+			);
+			if($this->tkt_upload->tkt_upload('cat_image'))
+			{
+				$data_update['cat_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->categorys_model->tkt_update($data_update))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles']['category'] = $this->categorys_model->tkt_get($cat_id);
+		$data['_varibles']['categorys'] = $this->categorys_model->tkt_get_list();
+		$data['_content'] = 'admin/update_category';
+		$this->load->view('layouts/admin',$data);
+	}
+
 	public function new_slide()
 	{
 		if($this->input->post('new_slide'))
@@ -376,6 +538,171 @@ class Admin extends CI_Controller
 		}
 		$data['_varibles']['subs'] = $this->subscribe_email_model->tkt_get_list(0,0,'DESC');
 		$data['_content'] = 'admin/subscribe_email';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function new_course_cat()
+	{
+		if($this->input->post('new_course_cat'))
+		{
+			$data_insert = array(
+				'cc_name' => $this->input->post('cc_name',TRUE),
+				'cc_parent_id' => $this->input->post('cc_parent_id',TRUE),
+				'cc_description' => $this->input->post('cc_description'),
+				'cc_seo_title' => $this->input->post('cc_seo_title',TRUE),
+				'cc_seo_keyword' => $this->input->post('cc_seo_keyword',TRUE),
+				'cc_seo_description' => $this->input->post('cc_seo_description',TRUE),
+				'cc_image' => '/uploads/icons/none.jpg'
+				);
+			if($this->tkt_upload->tkt_upload('cc_image'))
+			{
+				$data_insert['cc_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->course_cat_model->tkt_insert($data_insert))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles']['coursescats'] = $this->course_cat_model->tkt_get_list();
+		$data['_content'] = 'admin/new_course_cat';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function courses_cat()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->course_cat_model->tkt_delete($this->input->post('table_records',TRUE)))
+				$data['_alert'] = 'alert/success';
+			else $data['_alert'] = 'alert/error';
+		}
+		$data['_varibles']['coursescats'] = $this->course_cat_model->tkt_get_list();
+		$data['_content'] = 'admin/courses_cat';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function update_courses_cat($cc_id)
+	{
+		if($this->input->post('update_courses_cat'))
+		{
+			$data_update = array(
+				'cc_id' => $cc_id,
+				'cc_name' => $this->input->post('cc_name',TRUE),
+				'cc_parent_id' => $this->input->post('cc_parent_id',TRUE),
+				'cc_description' => $this->input->post('cc_description'),
+				'cc_seo_title' => $this->input->post('cc_seo_title',TRUE),
+				'cc_seo_keyword' => $this->input->post('cc_seo_keyword',TRUE),
+				'cc_seo_description' => $this->input->post('cc_seo_description',TRUE)
+				);
+			if($this->tkt_upload->tkt_upload('cc_image'))
+			{
+				$data_update['cc_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->course_cat_model->tkt_update($data_update))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles']['course_cat'] =  $this->course_cat_model->tkt_get($cc_id);
+		$data['_varibles']['coursescats'] = $this->course_cat_model->tkt_get_list();
+		$data['_content'] = 'admin/update_courses_cat';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function new_course()
+	{
+		if($this->input->post('new_course'))
+		{
+			$data_insert = array(
+				'kh_ten' => $this->input->post('kh_ten',TRUE),
+				'kh_hocphi' => $this->input->post('kh_hocphi',TRUE),
+				'kh_hocphigiam' => $this->input->post('kh_hocphigiam',TRUE),
+				'kh_noidung' => $this->input->post('kh_noidung'),
+				'kh_seo_title' => $this->input->post('kh_seo_title',TRUE),
+				'kh_seo_keyword' => $this->input->post('kh_seo_keyword',TRUE),
+				'kh_seo_description' => $this->input->post('kh_seo_description',TRUE),
+				'kh_ngaykhaigiang' => strtotime($this->input->post('kh_ngaykhaigiang',TRUE)),
+				'kh_cat_ids' => json_encode($this->input->post('kh_cat_ids',TRUE)),
+				'kh_image' => '/uploads/icons/none.jpg',
+				'kh_time' => $this->input->post('kh_time',TRUE)
+				);
+			if($this->tkt_upload->tkt_upload('kh_image'))
+			{
+				$data_insert['kh_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->course_model->tkt_insert($data_insert))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles']['coursescats'] = $this->course_cat_model->tkt_get_list();
+		$data['_content'] = 'admin/new_course';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function courses()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->course_model->tkt_delete($this->input->post('table_records',TRUE)))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_content'] = 'admin/courses';
+		$data['_varibles']['courses'] = $this->course_model->tkt_get_list();
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function update_course($kh_id)
+	{
+		if($this->input->post('update_course'))
+		{
+			$data_update = array(
+				'kh_id' => $kh_id,
+				'kh_ten' => $this->input->post('kh_ten',TRUE),
+				'kh_hocphi' => $this->input->post('kh_hocphi',TRUE),
+				'kh_hocphigiam' => $this->input->post('kh_hocphigiam',TRUE),
+				'kh_noidung' => $this->input->post('kh_noidung'),
+				'kh_cat_ids' => json_encode($this->input->post('kh_cat_ids',TRUE)),
+				'kh_seo_title' => $this->input->post('kh_seo_title',TRUE),
+				'kh_seo_keyword' => $this->input->post('kh_seo_keyword',TRUE),
+				'kh_seo_description' => $this->input->post('kh_seo_description',TRUE),
+				'kh_ngaykhaigiang' => strtotime($this->input->post('kh_ngaykhaigiang',TRUE)),
+				'kh_time' => $this->input->post('kh_time',TRUE)
+				);
+			if($this->tkt_upload->tkt_upload('kh_image'))
+			{
+				$data_update['kh_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->course_model->tkt_update($data_update))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles']['course'] =  $this->course_model->tkt_get($kh_id);
+		$data['_varibles']['coursescats'] = $this->course_cat_model->tkt_get_list();
+		$data['_content'] = 'admin/update_course';
 		$this->load->view('layouts/admin',$data);
 	}
 }

@@ -17,6 +17,23 @@
         <li><a href="/admin/blogcategory">Categories</a></li>
       </ul>
     </li>
+    <li><a><i class="fa fa-database"></i> Products <span class="fa fa-chevron-down"></span></a>
+      <ul class="nav child_menu">
+        <li><a href="/admin/new_product">New Product</a></li>
+        <li><a href="/admin/add_product_category">New Category</a></li>
+        <li><a href="/admin/categorys">Categorys</a></li>
+        <li><a href="/admin/products">Products</a></li>
+      </ul>
+    </li>
+    <li><a><i class="fa fa-file"></i> Courses <span class="fa fa-chevron-down"></span></a>
+      <ul class="nav child_menu">
+        <li><a href="/admin/new_course">New Course</a></li>
+        <li><a href="/admin/courses">Courses</a></li>
+        <li><a href="/admin/new_course_cat">New Courses Category</a></li>
+        <li><a href="/admin/courses_cat">Courses Category</a></li>
+        <li><a href="/admin/dangkyhoc">Đăng ký học</a></li>
+      </ul>
+    </li>
     <li><a><i class="fa fa-plug"></i> Extends <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         <li><a target="_blank" href="/lib/ckfinder/ckfinder.html">Media Files</a></li>

@@ -25,13 +25,13 @@
         <li><a href="/admin/products">Products</a></li>
       </ul>
     </li>
-    <li><a><i class="fa fa-file"></i> Courses <span class="fa fa-chevron-down"></span></a>
+    <li><a><i class="fa fa-graduation-cap"></i> Courses <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         <li><a href="/admin/new_course">New Course</a></li>
         <li><a href="/admin/courses">Courses</a></li>
         <li><a href="/admin/new_course_cat">New Courses Category</a></li>
         <li><a href="/admin/courses_cat">Courses Category</a></li>
-        <li><a href="/admin/dangkyhoc">Đăng ký học</a></li>
+        <li><a href="/admin/registration_course">Registration Course</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-plug"></i> Extends <span class="fa fa-chevron-down"></span></a>

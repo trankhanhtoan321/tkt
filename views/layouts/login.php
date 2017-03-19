@@ -47,22 +47,22 @@
 
               <div class="clearfix"></div>
 
-              <div class="separator">
+              <!-- <div class="separator">
                 <p class="change_link">New to site?
                   <a href="#signup" class="to_register"> Create Account </a>
                 </p>
 
                 <div class="clearfix"></div>
                 <br />
-              </div>
+              </div> -->
             </form>
           </section>
         </div>
 
-        <div id="register" class="animate form registration_form">
+        <!-- <div id="register" class="animate form registration_form">
           <section class="login_content">
             <form action="" method="post">
-              <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>" /> 
+              <input type="hidden" name="<?php //$this->security->get_csrf_token_name(); ?>" value="<?php // $this->security->get_csrf_hash(); ?>" /> 
               <h1>Create Account</h1>
               <div>
                 <input type="text" class="form-control" placeholder="Username" name="user_name" required="" />
@@ -88,7 +88,7 @@
               </div>
             </form>
           </section>
-        </div>
+        </div> -->
       </div>
     </div>
   </body>

@@ -81,4 +81,10 @@ class Main extends CI_Controller
 		$data['_content'] = 'site/home';
 		$this->load->view('layouts/site',$data);
 	}
+
+	public function test()
+	{
+		$data['time'] = strtotime(date("9:30 3/18/2017"));
+		$this->load->view('widgets/dongho',$data);
+	}
 }

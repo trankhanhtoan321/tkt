@@ -18,6 +18,7 @@ class Admin extends CI_Controller
 		$this->load->model('products_model');
 		$this->load->model('course_cat_model');
 		$this->load->model('course_model');
+		$this->load->model('registration_course_model');
 		$this->load->library('tkt_upload');
 
 		$this->_userlogin = $this->session->userdata('userlogin');
@@ -703,6 +704,24 @@ class Admin extends CI_Controller
 		$data['_varibles']['course'] =  $this->course_model->tkt_get($kh_id);
 		$data['_varibles']['coursescats'] = $this->course_cat_model->tkt_get_list();
 		$data['_content'] = 'admin/update_course';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function registration_course()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->registration_course_model->tkt_delete($this->input->post('table_records',TRUE)))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_content'] = 'admin/registration_course';
+		$data['_varibles']['registration_courses'] = $this->registration_course_model->tkt_get_list();
 		$this->load->view('layouts/admin',$data);
 	}
 }

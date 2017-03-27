@@ -25,14 +25,16 @@ data array(
 */
 class Tkt_online
 {
-    private $file = APPPATH."libraries".DIRECTORY_SEPARATOR."Tkt_online.tmp";
+    private $file;
     private $ip;
     private $data;
-    private $timeout = 120;//2 minutes
+    private $timeout;
 
     public function __construct()
     {
     	$this->ip = $this->getUserIP();
+        $this->timeout = 120;// 2 minutes
+        $this->file = APPPATH."libraries".DIRECTORY_SEPARATOR."Tkt_online.tmp";
     	$this->data = @unserialize(file_get_contents($this->file));
 		$this->_removes_expired_data();
 		$this->_set_data();

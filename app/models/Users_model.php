@@ -70,7 +70,18 @@ class Users_model extends CI_Model
 				$data1[$field] = $data[$field];
 			}
 		}
-		if($this->db->insert($this->_tkt_table_name,$data1)) return TRUE;
+		if($this->db->insert($this->_tkt_table_name,$data1))
+		{
+			$this->db->reset_query();
+			$this->db->from($this->_tkt_table_name);
+			foreach($data1 as $key => $val)
+			{
+				$this->db->where($key,$val);
+			}
+			$result = $this->db->get();
+			$result = $result->result_array();
+			return $result[0][$this->_tkt_primary_field];
+		}
 		return FALSE;
 	}
 	/*

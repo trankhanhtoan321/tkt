@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Toan_model extends CI_Model
+class Bills_model extends CI_Model
 {
-	private $_tkt_table_name = 'blogs';
+	private $_tkt_table_name = 'bills';
 	private $_tkt_fields;
 	private $_tkt_primary_field;
 	public function __construct()
@@ -84,6 +84,7 @@ class Toan_model extends CI_Model
 		}
 		return FALSE;
 	}
+	
 	/*
 	$data = array(), need include primary field
 	return TRUE,FALSE
@@ -146,7 +147,7 @@ class Toan_model extends CI_Model
 	*/
 	public function tkt_search($key,$field = '',$limit=0,$offset=0,$order='ASC',$field='')
 	{
-		if(self::_tkt_field_exist($field))
+		if($this->_tkt_field_exist($field))
 		{
 			$this->db->like($field,$key);
 			if($limit!=0)
@@ -226,7 +227,7 @@ class Toan_model extends CI_Model
 	}
 	public function tkt_increase($key,$field)
 	{
-		if(self::_tkt_field_exist($field))
+		if($this->_tkt_field_exist($field))
 		{
 			$this->db->select($field);
 			$this->db->where($this->_tkt_primary_field,$key);
@@ -238,7 +239,7 @@ class Toan_model extends CI_Model
 			$data = array();
 			$data[$this->_tkt_primary_field]=$key;
 			$data[$field]=$num;
-			if(self::tkt_update($data)) return TRUE;
+			if($this->tkt_update($data)) return TRUE;
 			else return FALSE;
 		}
 		return FALSE;

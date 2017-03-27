@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Toan_model extends CI_Model
+class Billdetails_model extends CI_Model
 {
-	private $_tkt_table_name = 'blogs';
+	private $_tkt_table_name = 'billdetails';
 	private $_tkt_fields;
 	private $_tkt_primary_field;
 	public function __construct()

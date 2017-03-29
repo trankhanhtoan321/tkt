@@ -5,7 +5,7 @@ $userlogin = $this->session->userdata('userlogin');
 
 <li class="">
     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        <img src="<?= ($userlogin['user_image']!=NULL?$userlogin['user_image']:'/uploads/icons/user.png'); ?>"><?= $userlogin['user_name']; ?>
+        <img src="/uploads/icons/user.png"><?= $userlogin['user_name']; ?>
         <span class=" fa fa-angle-down"></span>
     </a>
     <ul class="dropdown-menu dropdown-usermenu pull-right">

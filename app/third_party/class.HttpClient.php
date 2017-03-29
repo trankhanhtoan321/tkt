@@ -13,7 +13,7 @@ class HttpClient {
     var $postdata = '';
     var $cookies = array();
     var $referer;
-    var $accept = '*/*';
+    var $accept = 'application/json, text/javascript, */*; q=0.01';
     var $accept_encoding = 'gzip, deflate';
     var $accept_language = 'en-US,en;q=0.5';
     var $user_agent = 'Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0';

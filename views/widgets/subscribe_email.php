@@ -4,12 +4,12 @@
 		<input type="hidden" name="<?=$this->security->get_csrf_token_name()?>" value="<?=$this->security->get_csrf_hash()?>" />
 		<input type="text" name="sub_email" class="form-control" placeholder="Nhập Email">
 		<div class="input-group-btn">
-			<button class="btn btn-success" type="submit">Đăng Ký</button>
+			<button class="btn btn-primary" type="submit">Đăng Ký</button>
 		</div>
 	</div>
 </form>
 <?php
-if($this->input->post('sub_email',TRUE))
+if($this->input->post('sub_email',TRUE) && $this->tkt_validate->is_email($this->input->post('sub_email',TRUE)))
 {
 	$data_insert = array(
 		'sub_email' => $this->input->post('sub_email',TRUE),

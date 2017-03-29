@@ -45,8 +45,7 @@ class Tkt_mailer
 
     public function send()
     {
-        if($this->mail->send()) return TRUE;
-        return FALSE;
+        return $this->mail->send();
     }
 
     public function getError()

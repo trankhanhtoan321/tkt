@@ -11,38 +11,22 @@ $userlogin = $this->session->userdata('userlogin');
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Admin Control</title>
-    <!-- /Meta, title. -->
 
     <!-- css -->
-    <!-- Bootstrap -->
     <link href="/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link href="/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
     <link href="/vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
     <link href="/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
-    <!-- Select2 -->
     <link href="/vendors/select2/dist/css/select2.min.css" rel="stylesheet">
-    <!-- Datatables -->
     <link href="/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
-    <!-- bootstrap-daterangepicker -->
-    <link href="/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <!-- Custom Theme Style -->
     <link href="/style/custom.min.css" rel="stylesheet">
-    <!-- /css -->
 
     <!-- script -->
-    <!-- ckeditor -->
     <script src="/lib/ckeditor/ckeditor.js"></script>
-    <!-- jQuery -->
     <script src="/vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
     <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- /script -->
 </head>
 
 <body class="nav-md">
@@ -56,7 +40,7 @@ $userlogin = $this->session->userdata('userlogin');
                     <!-- menu profile quick info -->
                     <div class="profile">
                         <div class="profile_pic">
-                            <img src="<?= ($userlogin['user_image']!=NULL?$userlogin['user_image']:'/uploads/icons/user.png'); ?>" class="img-circle profile_img">
+                            <img src="/uploads/icons/user.png" class="img-circle profile_img">
                         </div>
                         <div class="profile_info">
                             <span>Welcome,</span>
@@ -107,7 +91,7 @@ $userlogin = $this->session->userdata('userlogin');
             <!-- footer content -->
             <footer>
                 <div class="pull-right">
-                    &copy; TKT Admin Control
+                    &copy; BUKT Admin Control
                 </div>
                 <div class="clearfix"></div>
             </footer>
@@ -115,22 +99,15 @@ $userlogin = $this->session->userdata('userlogin');
         </div>
     </div>
 
-    <!-- FastClick -->
     <script src="/vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
     <script src="/vendors/nprogress/nprogress.js"></script>
-    <!-- iCheck -->
     <script src="/vendors/iCheck/icheck.min.js"></script>
-    <!-- Select2 -->
     <script src="/vendors/select2/dist/js/select2.full.min.js"></script>
-    <!-- Datatables -->
     <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="/vendors/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js"></script>
     <script src="/vendors/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <!-- Autosize -->
     <script src="/vendors/autosize/dist/autosize.min.js"></script>
-    <!-- Custom Theme Scripts -->
     <script src="/js/custom.min.js"></script>
 
     <!-- Select2 -->

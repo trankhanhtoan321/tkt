@@ -46,49 +46,9 @@
               </div>
 
               <div class="clearfix"></div>
-
-              <!-- <div class="separator">
-                <p class="change_link">New to site?
-                  <a href="#signup" class="to_register"> Create Account </a>
-                </p>
-
-                <div class="clearfix"></div>
-                <br />
-              </div> -->
             </form>
           </section>
         </div>
-
-        <!-- <div id="register" class="animate form registration_form">
-          <section class="login_content">
-            <form action="" method="post">
-              <input type="hidden" name="<?php //$this->security->get_csrf_token_name(); ?>" value="<?php // $this->security->get_csrf_hash(); ?>" /> 
-              <h1>Create Account</h1>
-              <div>
-                <input type="text" class="form-control" placeholder="Username" name="user_name" required="" />
-              </div>
-              <div>
-                <input type="email" class="form-control" name="user_email" placeholder="Email" required="" />
-              </div>
-              <div>
-                <input type="password" class="form-control" name="user_pass" placeholder="Password" required="" />
-              </div>
-              <div>
-                <input class="btn btn-default submit" type="submit" name="create" value="Submit" />
-              </div>
-
-              <div class="clearfix"></div>
-
-              <div class="separator">
-                <p class="change_link">Already a member ?
-                  <a href="#signin" class="to_register"> Log in </a>
-                </p>
-                <div class="clearfix"></div>
-                <br />
-              </div>
-            </form>
-          </section>
-        </div> -->
       </div>
     </div>
   </body>

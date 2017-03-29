@@ -7,9 +7,8 @@ class Admin extends CI_Controller
 	public function __construct()
 	{
 		parent::__construct();
-		if(!$this->session->has_userdata('userlogin'))
-			redirect('/login','refresh');
-		
+		if(!$this->session->has_userdata('userlogin')) redirect('/login','refresh');
+		$this->load->model('blog_model');
 		$this->load->model('users_model');
 		$this->load->model('blogcategory_model');
 		$this->load->model('slide_model');
@@ -19,9 +18,11 @@ class Admin extends CI_Controller
 		$this->load->model('course_cat_model');
 		$this->load->model('course_model');
 		$this->load->model('registration_course_model');
+		$this->load->model('student_comment_model');
+		$this->load->model('lecturer_model');
+		$this->load->model('exam_result_model');
 		$this->load->library('tkt_upload');
-
-		$this->_userlogin = $this->session->userdata('userlogin');
+		$this->load->library('tkt_validate');
 	}
 
 	public function index()
@@ -44,10 +45,6 @@ class Admin extends CI_Controller
 			$users = $this->users_model->tkt_get_list_by_field('user_name',$data_update['user_name']);
 			if($data_update['user_name']==$this->_userlogin['user_name'] || count($users)==0)
 			{
-				if($this->tkt_upload->tkt_upload('user_image'))
-				{
-					$data_update['user_image'] = $this->tkt_upload->tkt_get_file_path();
-				}
 				if($this->users_model->tkt_update($data_update))
 				{
 					$data['_alert'] = 'alert/success';
@@ -120,7 +117,7 @@ class Admin extends CI_Controller
 				'id_analytics' => $this->input->post('id_analytics'),
 				'google_site_verification' => $this->input->post('google_site_verification')
 				);
-			if($this->tkt_upload->tkt_upload('logo'))
+			if($this->tkt_upload->tkt_upload('logo','image','images/logos/'))
 			{
 				$data_update['logo'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -169,7 +166,7 @@ class Admin extends CI_Controller
 				'blogcat_description' => $this->input->post('blogcat_description'),
 				'blogcat_image' => '/uploads/icons/none.jpg'
 				);
-			if($this->tkt_upload->tkt_upload('blogcat_image'))
+			if($this->tkt_upload->tkt_upload('blogcat_image','image','images/blogs/'))
 			{
 				$data_insert['blogcat_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -201,7 +198,7 @@ class Admin extends CI_Controller
 				'blogcat_parent_id' => $this->input->post('blogcat_parent_id'),
 				'blogcat_description' => $this->input->post('blogcat_description')
 				);
-			if($this->tkt_upload->tkt_upload('blogcat_image'))
+			if($this->tkt_upload->tkt_upload('blogcat_image','image','images/blogs/'))
 			{
 				$data_update['blogcat_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -235,7 +232,7 @@ class Admin extends CI_Controller
 				'blog_content' => $this->input->post('blog_content'),
 				'blog_image' => '/uploads/icons/none.jpg'
 				);
-			if($this->tkt_upload->tkt_upload('blog_image'))
+			if($this->tkt_upload->tkt_upload('blog_image','image','images/blogs/'))
 			{
 				$data_insert['blog_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -286,7 +283,7 @@ class Admin extends CI_Controller
 				'blog_cat_ids' => json_encode($this->input->post('blog_cat_ids')),
 				'blog_content' => $this->input->post('blog_content')
 				);
-			if($this->tkt_upload->tkt_upload('blog_image'))
+			if($this->tkt_upload->tkt_upload('blog_image','image','images/blogs/'))
 			{
 				$data_update['blog_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -310,15 +307,15 @@ class Admin extends CI_Controller
 		if($this->input->post('add_product_category'))
 		{
 			$data_temp = array(
-				'cat_name' => $this->input->post('cat_name',TRUE),
-				'cat_seo_title' => $this->input->post('cat_seo_title',TRUE),
-				'cat_seo_description' => $this->input->post('cat_seo_description',TRUE),
-				'cat_seo_keyword' => $this->input->post('cat_seo_keyword',TRUE),
-				'cat_parent_id' => $this->input->post('cat_parent_id',TRUE),
+				'cat_name' => $this->input->post('cat_name'),
+				'cat_seo_title' => $this->input->post('cat_seo_title'),
+				'cat_seo_description' => $this->input->post('cat_seo_description'),
+				'cat_seo_keyword' => $this->input->post('cat_seo_keyword'),
+				'cat_parent_id' => $this->input->post('cat_parent_id'),
 				'cat_description' => $this->input->post('cat_description'),
 				'cat_image' => '/uploads/icons/none.jpg'
 			);
-			if($this->tkt_upload->tkt_upload('cat_image'))
+			if($this->tkt_upload->tkt_upload('cat_image','image','images/products/'))
 			{
 				$data_temp['cat_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -340,7 +337,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->categorys_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->categorys_model->tkt_delete($this->input->post('table_records')))
 				$data['_alert'] = 'alert/success';
 			else $data['_alert'] = 'alert/error';
 		}
@@ -353,7 +350,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->products_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->products_model->tkt_delete($this->input->post('table_records')))
 				$data['_alert'] = 'alert/success';
 			else $data['_alert'] = 'alert/error';
 		}
@@ -367,18 +364,18 @@ class Admin extends CI_Controller
 		if($this->input->post('new_product'))
 		{
 			$data_insert = array(
-				'pro_name' => $this->input->post('pro_name',TRUE),
-				'pro_sku' => $this->input->post('pro_sku',TRUE),
-				'pro_description' => $this->input->post('pro_description',TRUE),
-				'pro_shortdescripttion' => $this->input->post('pro_shortdescripttion',TRUE),
-				'pro_seo_title' => $this->input->post('pro_seo_title',TRUE),
+				'pro_name' => $this->input->post('pro_name'),
+				'pro_sku' => $this->input->post('pro_sku'),
+				'pro_description' => $this->input->post('pro_description'),
+				'pro_shortdescripttion' => $this->input->post('pro_shortdescripttion'),
+				'pro_seo_title' => $this->input->post('pro_seo_title'),
 				'pro_seo_description' => $this->input->post('pro_seo_description'),
-				'pro_seo_keyword' => $this->input->post('pro_seo_keyword',TRUE),
-				'pro_price' => $this->input->post('pro_price',TRUE),
-				'pro_cat_ids' => json_encode($this->input->post('pro_cat_ids',TRUE)),
+				'pro_seo_keyword' => $this->input->post('pro_seo_keyword'),
+				'pro_price' => $this->input->post('pro_price'),
+				'pro_cat_ids' => json_encode($this->input->post('pro_cat_ids')),
 				'pro_image' => '/uploads/icons/none.jpg'
 			);
-			if($this->tkt_upload->tkt_upload('pro_image'))
+			if($this->tkt_upload->tkt_upload('pro_image','image','images/products/'))
 			{
 				$data_insert['pro_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -402,17 +399,17 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'pro_id' => $pro_id,
-				'pro_name' => $this->input->post('pro_name',TRUE),
-				'pro_sku' => $this->input->post('pro_sku',TRUE),
+				'pro_name' => $this->input->post('pro_name'),
+				'pro_sku' => $this->input->post('pro_sku'),
 				'pro_description' => $this->input->post('pro_description'),
-				'pro_shortdescripttion' => $this->input->post('pro_shortdescripttion',TRUE),
-				'pro_seo_title' => $this->input->post('pro_seo_title',TRUE),
-				'pro_seo_description' => $this->input->post('pro_seo_description',TRUE),
-				'pro_seo_keyword' => $this->input->post('pro_seo_keyword',TRUE),
-				'pro_price' => $this->input->post('pro_price',TRUE),
-				'pro_cat_ids' => json_encode($this->input->post('pro_cat_ids',TRUE))
+				'pro_shortdescripttion' => $this->input->post('pro_shortdescripttion'),
+				'pro_seo_title' => $this->input->post('pro_seo_title'),
+				'pro_seo_description' => $this->input->post('pro_seo_description'),
+				'pro_seo_keyword' => $this->input->post('pro_seo_keyword'),
+				'pro_price' => $this->input->post('pro_price'),
+				'pro_cat_ids' => json_encode($this->input->post('pro_cat_ids'))
 			);
-			if($this->tkt_upload->tkt_upload('pro_image'))
+			if($this->tkt_upload->tkt_upload('pro_image','image','images/products/'))
 			{
 				$data_update['pro_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -437,14 +434,14 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'cat_id' => $cat_id,
-				'cat_name' => $this->input->post('cat_name',TRUE),
-				'cat_seo_title' => $this->input->post('cat_seo_title',TRUE),
-				'cat_seo_description' => $this->input->post('cat_seo_description',TRUE),
-				'cat_seo_keyword' => $this->input->post('cat_seo_keyword',TRUE),
-				'cat_parent_id' => $this->input->post('cat_parent_id',TRUE),
+				'cat_name' => $this->input->post('cat_name'),
+				'cat_seo_title' => $this->input->post('cat_seo_title'),
+				'cat_seo_description' => $this->input->post('cat_seo_description'),
+				'cat_seo_keyword' => $this->input->post('cat_seo_keyword'),
+				'cat_parent_id' => $this->input->post('cat_parent_id'),
 				'cat_description' => $this->input->post('cat_description')
 			);
-			if($this->tkt_upload->tkt_upload('cat_image'))
+			if($this->tkt_upload->tkt_upload('cat_image','image','images/products/'))
 			{
 				$data_update['cat_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -471,7 +468,7 @@ class Admin extends CI_Controller
 				'slide_link' => $this->input->post('slide_link'),
 				'slide_caption' => $this->input->post('slide_caption')
 				);
-			if($this->tkt_upload->tkt_upload('slide_image'))
+			if($this->tkt_upload->tkt_upload('slide_image','image','images/slides/'))
 			{
 				$data_insert['slide_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -511,7 +508,7 @@ class Admin extends CI_Controller
 				'slide_link' => $this->input->post('slide_link'),
 				'slide_caption' => $this->input->post('slide_caption')
 				);
-			if($this->tkt_upload->tkt_upload('slide_image'))
+			if($this->tkt_upload->tkt_upload('slide_image','image','images/slides/'))
 			{
 				$data_update['slide_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -547,15 +544,15 @@ class Admin extends CI_Controller
 		if($this->input->post('new_course_cat'))
 		{
 			$data_insert = array(
-				'cc_name' => $this->input->post('cc_name',TRUE),
-				'cc_parent_id' => $this->input->post('cc_parent_id',TRUE),
+				'cc_name' => $this->input->post('cc_name'),
+				'cc_parent_id' => $this->input->post('cc_parent_id'),
 				'cc_description' => $this->input->post('cc_description'),
-				'cc_seo_title' => $this->input->post('cc_seo_title',TRUE),
-				'cc_seo_keyword' => $this->input->post('cc_seo_keyword',TRUE),
-				'cc_seo_description' => $this->input->post('cc_seo_description',TRUE),
+				'cc_seo_title' => $this->input->post('cc_seo_title'),
+				'cc_seo_keyword' => $this->input->post('cc_seo_keyword'),
+				'cc_seo_description' => $this->input->post('cc_seo_description'),
 				'cc_image' => '/uploads/icons/none.jpg'
 				);
-			if($this->tkt_upload->tkt_upload('cc_image'))
+			if($this->tkt_upload->tkt_upload('cc_image','image','images/courses/'))
 			{
 				$data_insert['cc_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -577,7 +574,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->course_cat_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->course_cat_model->tkt_delete($this->input->post('table_records')))
 				$data['_alert'] = 'alert/success';
 			else $data['_alert'] = 'alert/error';
 		}
@@ -592,14 +589,14 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'cc_id' => $cc_id,
-				'cc_name' => $this->input->post('cc_name',TRUE),
-				'cc_parent_id' => $this->input->post('cc_parent_id',TRUE),
+				'cc_name' => $this->input->post('cc_name'),
+				'cc_parent_id' => $this->input->post('cc_parent_id'),
 				'cc_description' => $this->input->post('cc_description'),
-				'cc_seo_title' => $this->input->post('cc_seo_title',TRUE),
-				'cc_seo_keyword' => $this->input->post('cc_seo_keyword',TRUE),
-				'cc_seo_description' => $this->input->post('cc_seo_description',TRUE)
+				'cc_seo_title' => $this->input->post('cc_seo_title'),
+				'cc_seo_keyword' => $this->input->post('cc_seo_keyword'),
+				'cc_seo_description' => $this->input->post('cc_seo_description')
 				);
-			if($this->tkt_upload->tkt_upload('cc_image'))
+			if($this->tkt_upload->tkt_upload('cc_image','image','images/courses/'))
 			{
 				$data_update['cc_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -623,19 +620,19 @@ class Admin extends CI_Controller
 		if($this->input->post('new_course'))
 		{
 			$data_insert = array(
-				'kh_ten' => $this->input->post('kh_ten',TRUE),
-				'kh_hocphi' => $this->input->post('kh_hocphi',TRUE),
-				'kh_hocphigiam' => $this->input->post('kh_hocphigiam',TRUE),
+				'kh_ten' => $this->input->post('kh_ten'),
+				'kh_hocphi' => $this->input->post('kh_hocphi'),
+				'kh_hocphigiam' => $this->input->post('kh_hocphigiam'),
 				'kh_noidung' => $this->input->post('kh_noidung'),
-				'kh_seo_title' => $this->input->post('kh_seo_title',TRUE),
-				'kh_seo_keyword' => $this->input->post('kh_seo_keyword',TRUE),
-				'kh_seo_description' => $this->input->post('kh_seo_description',TRUE),
-				'kh_ngaykhaigiang' => strtotime($this->input->post('kh_ngaykhaigiang',TRUE)),
-				'kh_cat_ids' => json_encode($this->input->post('kh_cat_ids',TRUE)),
+				'kh_seo_title' => $this->input->post('kh_seo_title'),
+				'kh_seo_keyword' => $this->input->post('kh_seo_keyword'),
+				'kh_seo_description' => $this->input->post('kh_seo_description'),
+				'kh_ngaykhaigiang' => strtotime($this->input->post('kh_ngaykhaigiang')),
+				'kh_cat_ids' => json_encode($this->input->post('kh_cat_ids')),
 				'kh_image' => '/uploads/icons/none.jpg',
-				'kh_time' => $this->input->post('kh_time',TRUE)
+				'kh_time' => $this->input->post('kh_time')
 				);
-			if($this->tkt_upload->tkt_upload('kh_image'))
+			if($this->tkt_upload->tkt_upload('kh_image','image','images/courses/'))
 			{
 				$data_insert['kh_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -657,7 +654,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->course_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->course_model->tkt_delete($this->input->post('table_records')))
 			{
 				$data['_alert'] = 'alert/success';
 			}
@@ -677,18 +674,17 @@ class Admin extends CI_Controller
 		{
 			$data_update = array(
 				'kh_id' => $kh_id,
-				'kh_ten' => $this->input->post('kh_ten',TRUE),
-				'kh_hocphi' => $this->input->post('kh_hocphi',TRUE),
-				'kh_hocphigiam' => $this->input->post('kh_hocphigiam',TRUE),
+				'kh_ten' => $this->input->post('kh_ten'),
+				'kh_hocphi' => $this->input->post('kh_hocphi'),
 				'kh_noidung' => $this->input->post('kh_noidung'),
-				'kh_cat_ids' => json_encode($this->input->post('kh_cat_ids',TRUE)),
-				'kh_seo_title' => $this->input->post('kh_seo_title',TRUE),
-				'kh_seo_keyword' => $this->input->post('kh_seo_keyword',TRUE),
-				'kh_seo_description' => $this->input->post('kh_seo_description',TRUE),
-				'kh_ngaykhaigiang' => strtotime($this->input->post('kh_ngaykhaigiang',TRUE)),
-				'kh_time' => $this->input->post('kh_time',TRUE)
+				'kh_cat_ids' => json_encode($this->input->post('kh_cat_ids')),
+				'kh_seo_title' => $this->input->post('kh_seo_title'),
+				'kh_seo_keyword' => $this->input->post('kh_seo_keyword'),
+				'kh_seo_description' => $this->input->post('kh_seo_description'),
+				'kh_ngaykhaigiang' => strtotime($this->input->post('kh_ngaykhaigiang')),
+				'kh_time' => $this->input->post('kh_time')
 				);
-			if($this->tkt_upload->tkt_upload('kh_image'))
+			if($this->tkt_upload->tkt_upload('kh_image','image','images/courses/'))
 			{
 				$data_update['kh_image'] = $this->tkt_upload->tkt_get_file_path();
 			}
@@ -711,7 +707,7 @@ class Admin extends CI_Controller
 	{
 		if($this->input->post('delete_records'))
 		{
-			if($this->registration_course_model->tkt_delete($this->input->post('table_records',TRUE)))
+			if($this->registration_course_model->tkt_delete($this->input->post('table_records')))
 			{
 				$data['_alert'] = 'alert/success';
 			}
@@ -722,6 +718,147 @@ class Admin extends CI_Controller
 		}
 		$data['_content'] = 'admin/registration_course';
 		$data['_varibles']['registration_courses'] = $this->registration_course_model->tkt_get_list();
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function student_comment()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->student_comment_model->tkt_delete($this->input->post('table_records')))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_content'] = 'admin/student_comment';
+		$data['_varibles']['student_comments'] = $this->student_comment_model->tkt_get_list();
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function new_student_comment()
+	{
+		if($this->input->post('new_student_comment'))
+		{
+			$data_insert = array(
+				'student_comment_name' => $this->input->post('student_comment_name'),
+				'student_comment_class' => $this->input->post('student_comment_class'),
+				'student_comment_content' => $this->input->post('student_comment_content'),
+				'student_comment_info' => $this->input->post('student_comment_info'),
+				'student_comment_image' => '/uploads/icons/user.png',
+				'student_comment_time' => time()
+				);
+			if($this->tkt_upload->tkt_upload('student_comment_image','image','images/student_comment/'))
+			{
+				$data_insert['student_comment_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->student_comment_model->tkt_insert($data_insert))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles'] = NULL;
+		$data['_content'] = 'admin/new_student_comment';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function lecturer()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->lecturer_model->tkt_delete($this->input->post('table_records')))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_content'] = 'admin/lecturer';
+		$data['_varibles']['lecturers'] = $this->lecturer_model->tkt_get_list();
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function new_lecturer()
+	{
+		if($this->input->post('new_lecturer'))
+		{
+			$data_insert = array(
+				'lecturer_name' => $this->input->post('lecturer_name'),
+				'lecturer_info' => $this->input->post('lecturer_info'),
+				'lecturer_image' => '/uploads/icons/user.png'
+				);
+			if($this->tkt_upload->tkt_upload('lecturer_image','image','images/lecturer/'))
+			{
+				$data_insert['lecturer_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->lecturer_model->tkt_insert($data_insert))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles'] = NULL;
+		$data['_content'] = 'admin/new_lecturer';
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function exam_result()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->exam_result_model->tkt_delete($this->input->post('table_records')))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_content'] = 'admin/exam_result';
+		$data['_varibles']['exam_results'] = $this->exam_result_model->tkt_get_list();
+		$this->load->view('layouts/admin',$data);
+	}
+
+	public function new_exam_result()
+	{
+		if($this->input->post('new_exam_result'))
+		{
+			$data_insert = array(
+				'exam_result_name' => $this->input->post('exam_result_name'),
+				'exam_result_phone' => $this->input->post('exam_result_phone'),
+				'exam_result_time' => $this->input->post('exam_result_time'),
+				'exam_result_goal' => $this->input->post('exam_result_goal'),
+				'exam_result_course' => $this->input->post('exam_result_course')
+				);
+			$data_insert['exam_result_email'] = $this->tkt_validate->is_email($this->input->post('exam_result_email'))?$this->input->post('exam_result_email'):'';
+			if($this->tkt_upload->tkt_upload('lecturer_image','image','images/exam_result/'))
+			{
+				$data_insert['lecturer_image'] = $this->tkt_upload->tkt_get_file_path();
+			}
+			if($this->exam_result_model->tkt_insert($data_insert))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_varibles'] = NULL;
+		$data['_content'] = 'admin/new_exam_result';
 		$this->load->view('layouts/admin',$data);
 	}
 }

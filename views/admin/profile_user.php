@@ -37,16 +37,6 @@ $userlogin = $this->session->userdata('userlogin');
 							<input type="text" id="user_email" class="form-control col-md-7 col-xs-12" name="user_email" required="required" value="<?= $userlogin['user_email']; ?>" />
 						</div>
 					</div>
-					<div class="form-group">
-						<label class="control-label col-md-3 col-sm-3 col-xs-12" for="user_image">
-							User Avatar:
-						</label>
-						<div class="col-md-6 col-sm-6 col-xs-12">
-							<input type="file" id="user_image" class="form-control col-md-7 col-xs-12" name="user_image" />
-							<br/><br/>
-							<img src="<?= $userlogin['user_image']; ?>" class="img-responsive img-thumbnail" />
-						</div>
-					</div>
 					<div class="ln_solid"></div>
 					<div class="form-group">
 						<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">

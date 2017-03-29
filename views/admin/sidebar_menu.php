@@ -34,14 +34,32 @@
         <li><a href="/admin/registration_course">Registration Course</a></li>
       </ul>
     </li>
+    <li><a><i class="fa fa-graduation-cap"></i> Lecturer <span class="fa fa-chevron-down"></span></a>
+      <ul class="nav child_menu">
+        <li><a href="/admin/new_lecturer">New Lecturer</a></li>
+        <li><a href="/admin/lecturer">Lecturer</a></li>
+      </ul>
+    </li>
     <li><a><i class="fa fa-plug"></i> Extends <span class="fa fa-chevron-down"></span></a>
       <ul class="nav child_menu">
         <li><a target="_blank" href="/lib/ckfinder/ckfinder.html">Media Files</a></li>
         <li><a href="/admin/subscribe_email">Subscribe Email</a></li>
+        <li><a>Student Comment<span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+              <li><a href="/admin/new_student_comment">New</a></li>
+              <li><a href="/admin/student_comment">Management</a></li>
+            </ul>
+        </li>
         <li><a>Slide<span class="fa fa-chevron-down"></span></a>
             <ul class="nav child_menu">
               <li><a href="/admin/new_slide">New Slide</a></li>
               <li><a href="/admin/slides">Slides</a></li>
+            </ul>
+        </li>
+        <li><a>Exam Result<span class="fa fa-chevron-down"></span></a>
+            <ul class="nav child_menu">
+              <li><a href="/admin/new_exam_result">New</a></li>
+              <li><a href="/admin/exam_result">List</a></li>
             </ul>
         </li>
       </ul>

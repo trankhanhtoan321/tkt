@@ -95,4 +95,4 @@
 	var deadline = new Date(<?=$time?>*1000);
 	initializeClock('clockdiv', deadline);
 </script>
-<!-- end dong ho
+<!-- end dong ho -->

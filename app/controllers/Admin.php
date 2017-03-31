@@ -861,4 +861,22 @@ class Admin extends CI_Controller
 		$data['_content'] = 'admin/new_exam_result';
 		$this->load->view('layouts/admin',$data);
 	}
+
+	public function learn_trial()
+	{
+		if($this->input->post('delete_records'))
+		{
+			if($this->learn_trial_model->tkt_delete($this->input->post('table_records')))
+			{
+				$data['_alert'] = 'alert/success';
+			}
+			else
+			{
+				$data['_alert'] = 'alert/error';
+			}
+		}
+		$data['_content'] = 'admin/learn_trial';
+		$data['_varibles']['learn_trials'] = $this->learn_trial_model->tkt_get_list();
+		$this->load->view('layouts/admin',$data);
+	}
 }

@@ -1,3 +1,6 @@
+<div class="navbar navbar-default">
+	<img style="width: 100%;margin: 0;padding: 0;" src="/uploads/banner.jpg">
+</div>
 <div class="container">
 	<div class="row">
 		<div class="col-xs-12">

@@ -1,1 +1,1 @@
-a:9:{s:5:"total";i:558;s:5:"today";i:29;s:9:"yesterday";i:39;s:4:"date";s:10:"29/03/2017";s:4:"user";a:1:{s:9:"127.0.0.1";a:3:{s:3:"uri";s:1:"/";s:4:"time";i:1490769871;s:3:"bot";i:0;}}s:3:"bot";i:128;s:5:"month";s:7:"03/2017";s:8:"premonth";i:8;s:9:"thismonth";i:551;}
+a:9:{s:5:"total";i:639;s:5:"today";i:7;s:9:"yesterday";i:47;s:4:"date";s:10:"31/03/2017";s:4:"user";a:1:{s:9:"127.0.0.1";a:3:{s:3:"uri";s:6:"/admin";s:4:"time";i:1490923519;s:3:"bot";i:0;}}s:3:"bot";i:128;s:5:"month";s:7:"03/2017";s:8:"premonth";i:8;s:9:"thismonth";i:632;}

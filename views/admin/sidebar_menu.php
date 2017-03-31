@@ -32,6 +32,7 @@
         <li><a href="/admin/new_course_cat">New Courses Category</a></li>
         <li><a href="/admin/courses_cat">Courses Category</a></li>
         <li><a href="/admin/registration_course">Registration Course</a></li>
+        <li><a href="/admin/learn_trial">Learn Trial</a></li>
       </ul>
     </li>
     <li><a><i class="fa fa-graduation-cap"></i> Lecturer <span class="fa fa-chevron-down"></span></a>

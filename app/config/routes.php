@@ -53,4 +53,9 @@ $route['default_controller'] = 'main';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 /*_________________custom routes____________________________*/
+$route['thu-vien-hinh-anh\.html'] = 'main/thu_vien_hinh_anh';
+$route['(:any)-(:num)-cat\.html\/page\/(:num)']='blog/index/$2/$3';
+$route['(:any)-(:num)-cat\.html\/page\/']='blog/index/$2';
+$route['(:any)-(:num)-cat\.html\/page']='blog/index/$2';
+$route['(:any)-(:num)-cat\.html']='blog/index/$2';
 $route['(:any)-(:num)\.html']='blog/detail/$2';

@@ -1,15 +1,11 @@
 .navbar {
-	/*font-family: sans-serif, Arial, Helvetica;*/
 	margin-bottom: 0;
 	background-color: #0082C8;
 	border: 0;
 	border-radius: 0;
 }
 .navbar a{
-	/*font-family: "Roboto Condensed", Helvetica, Arial, Verdana, sans-serif;*/
 	color: #ffffff !important;
-	/*text-transform: uppercase;*/
-	/*font-weight: bold;*/
 }
 .navbar .navbar-header a{
 	color:#fff !important;
@@ -27,10 +23,44 @@
 	color:#aaa !important;
 }
 @media (min-width: 979px) {
-  ul.nav li.dropdown:hover > ul.dropdown-menu {
-    display: block;
-  }
+	ul.nav li.dropdown:hover > ul.dropdown-menu {
+		display: block;
+	}
 }
 a:hover{
 	text-decoration: none;
+}
+.parallax1 { 
+    background-image: url("/uploads/bg1.jpg");
+    height: 100%; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.parallax2 { 
+    background-image: url("/uploads/office.jpg");
+    height: 100%; 
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.mysidenav{
+	position: fixed;right: -40px;top: 150px;z-index:1000
+}
+.mysidenav:hover{
+	right:-25px;
+}
+.mysidenav2{
+	position: fixed;right: -40px;top: 250px;z-index:1000
+}
+.mysidenav2:hover{
+	right:-25px;
+}
+.mysidenav3{
+	position: fixed;right: -40px;top: 350px;z-index:1000
+}
+.mysidenav3:hover{
+	right:-25px;
 }
